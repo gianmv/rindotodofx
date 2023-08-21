@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="boderPane" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.move.rindotodofx.controller.AnnotationResumeList">
+   <center>
+      <ListView fx:id="annotationListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" />
+   </center>
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" text="Agregar" />
+         </children>
+      </HBox>
+   </top>
+</BorderPane>
