@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -38,7 +39,13 @@ public class AnnotationResumeController implements Initializable {
     @FXML
     private Button editButton;
 
-    private final MarkdownView markdownView = new MarkdownView();
+    private final MarkdownView markdownView = new MarkdownView() {
+
+        @Override
+        protected List<String> getDefaultStylesheets() {
+            return List.of("/com/sandec/mdfx/mdfx-default.css","/css/markdownfx.css");
+        }
+    };
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,7 +90,7 @@ public class AnnotationResumeController implements Initializable {
                     .flatMap(Stream::of)
                     .limit(3)
                     .collect(Collectors.joining("\n"));
-            markdownView.setMdString(mdString);
+            markdownView.setMdString(annotation.getMdText());
             dueDateDatePicker.valueProperty().setValue(annotation.getDueDate() != null ? annotation.getDueDate().toLocalDate() : LocalDate.now());
             priorityTextField.setText(annotation.getPriority() != null ? String.valueOf(annotation.getPriority()) : "");
         });
