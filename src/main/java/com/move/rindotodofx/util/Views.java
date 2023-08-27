@@ -6,7 +6,8 @@ public enum Views {
     MAIN("/views/Main.fxml"),
     ANNOTATION_EDITOR("/views/component/AnnotationEditor.fxml"),
     ANNOTATION_RESUME("/views/component/AnnotationResume.fxml"),
-    ANNOTATION_LIST("/views/AnnotationResumeList.fxml");
+    ANNOTATION_LIST("/views/AnnotationResumeList.fxml"),
+    TAG_VIEW("/views/component/TagView.fxml");
 
     private final URL fxmlUrl;
     Views(String fxmlResource) {
