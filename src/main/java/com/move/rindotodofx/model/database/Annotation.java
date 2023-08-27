@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table(name = "annotation")
 public class Annotation {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "annotation_id", nullable = false)
     private Long annotationId;
 
@@ -24,7 +26,7 @@ public class Annotation {
     @Column(name = "modification_date")
     private LocalDateTime modificationDate;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "annotation_tags",
             joinColumns = @JoinColumn(name = "annotation_annotation_id"),
             inverseJoinColumns = @JoinColumn(name = "tags_tag_id"))
@@ -35,6 +37,19 @@ public class Annotation {
 
     @Column(name = "priority")
     private Integer priority;
+
+    public Annotation() {
+    }
+
+    public Annotation(Annotation annotation) {
+        this.annotationId = annotation.annotationId;
+        this.mdText = annotation.mdText;
+        this.creationDate = annotation.creationDate;
+        this.modificationDate = annotation.modificationDate;
+        this.tags = new LinkedHashSet<>(annotation.tags);
+        this.dueDate = annotation.dueDate;
+        this.priority = annotation.priority;
+    }
 
     public Integer getPriority() {
         return priority;

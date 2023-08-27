@@ -17,6 +17,8 @@ open module rindotodofx {
     requires spring.data.jpa;
     requires spring.data.commons;
     requires reactfx;
+    requires org.controlsfx.controls;
+    requires org.slf4j;
 
     exports com.move.rindotodofx;
 }

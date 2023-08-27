@@ -1,5 +1,7 @@
 package com.move.rindotodofx.util;
 
+import com.move.rindotodofx.controller.component.AnnotationEditorController;
+import com.move.rindotodofx.model.database.Annotation;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -14,6 +16,7 @@ import java.io.IOException;
 @Component
 public class SpringJavafxViewsHelper {
     private Stage mainStage;
+    private Stage secondStage;
     private final ApplicationContext applicationContext;
 
     public SpringJavafxViewsHelper(ApplicationContext applicationContext) {
@@ -70,6 +73,27 @@ public class SpringJavafxViewsHelper {
             T controller = loader.getController();
             Pair<? extends Node, T> ans = new Pair<>(root, controller);
             return ans;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void openEditorFromSpringContext(Annotation annotation, Runnable onClose) {
+        try {
+            if (secondStage != null) {
+                secondStage.close();
+            }
+            Stage newWindow = new Stage();
+            FXMLLoader loader = new FXMLLoader(Views.ANNOTATION_EDITOR.getFxmlUrl());
+            loader.setControllerFactory(this.applicationContext::getBean);
+            Parent root = loader.load();
+            AnnotationEditorController annotationEditorController = loader.getController();
+            annotationEditorController.setAnnotation(annotation);
+            this.secondStage = newWindow;
+            newWindow.setScene(new Scene(root));
+            newWindow.show();
+            secondStage.setOnCloseRequest(ev -> onClose.run());
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

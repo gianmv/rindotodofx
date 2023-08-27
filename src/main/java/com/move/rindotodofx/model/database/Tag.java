@@ -1,9 +1,6 @@
 package com.move.rindotodofx.model.database;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -12,6 +9,7 @@ import java.util.Objects;
 @Table(name = "tag")
 public class Tag {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "tag_id", nullable = false)
     private Long tagId;
 

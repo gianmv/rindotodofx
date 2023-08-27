@@ -8,19 +8,19 @@ import com.move.rindotodofx.util.Views;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Control;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.util.Pair;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 @Component
@@ -62,6 +62,21 @@ public class AnnotationResumeList implements Initializable {
                         pair.getValue().setAnnotation(annotation);
                         Region region = (Region) pair.getKey();
                         setGraphic(region);
+                        region.setOnMouseClicked(ev -> {
+                            if(ev.getButton().equals(MouseButton.PRIMARY)){
+                                if(ev.getClickCount() == 2){
+                                    editAction(annotation);
+                                }
+                            }
+                        });
+
+                        ContextMenu contextMenu = new ContextMenu();
+                        MenuItem menuItem = new MenuItem("Duplicar");
+                        Annotation temp = new Annotation(annotation);
+                        temp.setAnnotationId(null);
+                        menuItem.setOnAction(ev -> springJavafxViewsHelper.openEditorFromSpringContext(temp, () -> reloadDataFromDatabase()));
+                        contextMenu.getItems().add(menuItem);
+                        setContextMenu(contextMenu);
                     }
                 }
             };
@@ -86,13 +101,26 @@ public class AnnotationResumeList implements Initializable {
     }
 
     private void editAction(Annotation annotation) {
-
         reloadData();
-
+        springJavafxViewsHelper.openEditorFromSpringContext(annotation, this::reloadDataFromDatabase);
     }
 
     private void reloadData() {
         this.allAnnotations.clear();
         this.allAnnotations.addAll(this.annotationRepository.findAll());
+    }
+
+    @FXML
+    public void addAction(ActionEvent actionEvent) {
+        Annotation annotation = new Annotation();
+        annotation.setPriority(0);
+        annotation.setDueDate(LocalDateTime.now());
+        annotation.setCreationDate(LocalDateTime.now());
+        annotation.setMdText("");
+        springJavafxViewsHelper.openEditorFromSpringContext(annotation, this::reloadDataFromDatabase);
+    }
+
+    private void reloadDataFromDatabase() {
+        Platform.runLater(this::reloadData);
     }
 }

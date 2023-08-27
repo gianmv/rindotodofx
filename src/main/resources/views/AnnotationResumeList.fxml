@@ -12,7 +12,7 @@
    <top>
       <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Agregar" />
+            <Button mnemonicParsing="false" onAction="#addAction" text="Agregar" />
          </children>
       </HBox>
    </top>
